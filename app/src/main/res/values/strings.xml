@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_fragment">Login Fragment</string>
+    <string name="back_button">"back button "</string>
+    <string name="welcome_to_news_app">"WelCome To NewsApp "</string>
+    <string name="email_or_username">Email or UserName</string>
+    <string name="username">UserName</string>
+    <string name="email">Email</string>
+    <string name="forget_password">Forget Password ?</string>
+    <string name="confirm_password">Confirm Password </string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="already_login">Already Login?</string>
+    <string name="sign_up"> Sign Up</string>
+    <string name="register"> Register</string>
+    <string name="password">PassWord</string>
+    <string name="api_key">0995fbea838a4714bd079748ac30ee0b</string>
+    <string name="base_url">https://newsapi.org/v2/</string>
+</resources>
