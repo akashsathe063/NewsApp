@@ -67,4 +67,9 @@ class UserAuthenticationViewModel @Inject constructor(private val authentication
             })
         }
     }
+    fun newsApiCall(){
+        viewModelScope.launch {
+            authenticationRepository.getNewsApiCall()
+        }
+    }
 }
