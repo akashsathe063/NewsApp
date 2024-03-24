@@ -10,7 +10,7 @@ interface ApiEndPoints {
     suspend fun getNewsHeadLines(
         @Query("country") country: String,
         @Query("category") category: String,
-        @Query("q") query: String,
+//        @Query("q") query: String,
         @Query("apiKey") apiKey: String
     ): Response<NewsApiResponse>
 }

@@ -63,6 +63,7 @@ class LoginFragment : Fragment() {
                 Log.d("LoginFragment", "#ak inside a userLogin $it")
                 if (it) {
                     findNavController().navigate(R.id.action_loginFragment_to_newsFragment)
+                    userAuthenticationViewModel.newsApiCall()
                 }
             })
         }
