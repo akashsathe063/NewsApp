@@ -5,14 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.utils.AuthListner
+import com.example.newsapp.model.Article
 import com.example.newsapp.repository.AuthenticationRepository
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import com.example.newsapp.utils.AuthListner
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +17,8 @@ class UserAuthenticationViewModel @Inject constructor(private val authentication
     val userRegisterStatus = _UserRegisterStatus as LiveData<Boolean>
     private var _UserLoginStatus = MutableLiveData<Boolean>()
     val userLoginStatus = _UserLoginStatus as LiveData<Boolean>
+    private var _NewsData = MutableLiveData<ArrayList<Article>>()
+    val newsData = _NewsData as LiveData<ArrayList<Article>>
     fun userRegistration(name: String, email: String, password: String) {
         Log.d(
             "UserAuthenticationViewModel",
@@ -67,9 +64,10 @@ class UserAuthenticationViewModel @Inject constructor(private val authentication
             })
         }
     }
-    fun newsApiCall(){
+
+    fun newsApiCall() {
         viewModelScope.launch {
-            authenticationRepository.getNewsApiCall()
+            _NewsData.value = authenticationRepository.getNewsApiCall()
         }
     }
 }
