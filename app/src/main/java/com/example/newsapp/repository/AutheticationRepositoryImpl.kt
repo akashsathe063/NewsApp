@@ -1,6 +1,7 @@
 package com.example.newsapp.repository
 
 import android.util.Log
+import com.example.newsapp.model.Article
 import com.example.newsapp.retrofit.ApiEndPoints
 import com.example.newsapp.utils.AuthListner
 import com.example.newsapp.utils.Constants
@@ -52,17 +53,15 @@ class AutheticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNewsApiCall() {
+    override suspend fun getNewsApiCall(): ArrayList<Article> {
         val result = apiEndPoints.getNewsHeadLines("in", "sports", Constants.API_KEY)
         Log.d("AuthenticationRepositoryImpl", "#ak inside a getNewsApiCall ${result.code()}")
         if (result.isSuccessful) {
             if (result.body() != null) {
                 val articals = result.body()?.articles
-                Log.d(
-                    "AuthenticationRepositoryImpl",
-                    "#ak inside a getNewsApiCall ${articals?.size} || ${articals.toString()}"
-                )
+                return articals as ArrayList<Article>
             }
         }
+        return emptyList<Article>() as ArrayList<Article>
     }
 }
