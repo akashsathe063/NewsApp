@@ -19,6 +19,7 @@ class UserAuthenticationViewModel @Inject constructor(private val authentication
     val userLoginStatus = _UserLoginStatus as LiveData<Boolean>
     private var _NewsData = MutableLiveData<ArrayList<Article>>()
     val newsData = _NewsData as LiveData<ArrayList<Article>>
+    lateinit var _NewsDatFromLocalDataBase : LiveData<ArrayList<Article>>
     fun userRegistration(name: String, email: String, password: String) {
         Log.d(
             "UserAuthenticationViewModel",
@@ -69,5 +70,12 @@ class UserAuthenticationViewModel @Inject constructor(private val authentication
         viewModelScope.launch {
             _NewsData.value = authenticationRepository.getNewsApiCall()
         }
+    }
+
+    fun getNewsDataFromLocatDataBase():LiveData<ArrayList<Article>>{
+        viewModelScope.launch {
+            _NewsDatFromLocalDataBase = authenticationRepository.getNewsFromLOcalDataBAse() as LiveData<ArrayList<Article>>
+        }
+        return  _NewsDatFromLocalDataBase
     }
 }

@@ -7,22 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentRegisterBinding
 import com.example.newsapp.di.DaggerAppComponent
 import com.example.newsapp.viewmodels.UserAuthenticationViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class RegisterFragment : Fragment() {
     lateinit var binding: FragmentRegisterBinding
 
 
-    private var authenticationViewModel: UserAuthenticationViewModel =
-        DaggerAppComponent.builder().build().getUserAuthenticationViewModel()
+    private var authenticationViewModel: UserAuthenticationViewModel? =
+        context?.let { DaggerAppComponent.factory().create(it.applicationContext).getUserAuthenticationViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +45,8 @@ class RegisterFragment : Fragment() {
                 "#ak iside a name = $name || email = $email || password = $password"
             )
             if (password == confirmPasssword) {
-                authenticationViewModel.userRegistration(name, email, password)
-                authenticationViewModel.userRegisterStatus.observe(viewLifecycleOwner, Observer {
+                authenticationViewModel?.userRegistration(name, email, password)
+                authenticationViewModel?.userRegisterStatus?.observe(viewLifecycleOwner, Observer {
                     if (it) {
                         popFragmentRegistration()
                     }
