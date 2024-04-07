@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentLoginBinding
-import com.example.newsapp.di.DaggerAppComponent
+import com.example.newsapp.viewmodels.UserAuthenticationViewModel
+import com.example.newsapp.views.activities.MainActivity
 
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
-    private val userAuthenticationViewModel =
-        DaggerAppComponent.builder().build().getUserAuthenticationViewModel()
+    private  var userAuthenticationViewModel :UserAuthenticationViewModel? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +29,15 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        if (context?.applicationContext == null){
+//            Log.d("LoginFragment","#ak inside a 1")
+//        }else {
+//          userAuthenticationViewModel = context?.let {
+//              DaggerAppComponent.factory().create(it.applicationContext)
+//                  .getUserAuthenticationViewModel()
+//          }
+//        }
+        userAuthenticationViewModel = (activity as MainActivity).userAuthenticationViewModel
         moveLoginToRegistration()
         loginButtonOnClick()
     }
@@ -56,9 +66,9 @@ class LoginFragment : Fragment() {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             Log.d("LoginFragment", "#ak inside a userLogin email = $email || password = $password")
 
-            Log.d("LoginFragment", "#ak inside a LifecycleScope launch")
-            userAuthenticationViewModel.userLogin(email, password)
-            userAuthenticationViewModel.userLoginStatus.observe(viewLifecycleOwner) {
+            Log.d("LoginFragment", "#ak inside a LifecycleScope launch : ${userAuthenticationViewModel.toString()}")
+            userAuthenticationViewModel?.userLogin(email, password)
+            userAuthenticationViewModel?.userLoginStatus?.observe(viewLifecycleOwner) {
                 Log.d("LoginFragment", "#ak inside a userLogin $it")
                 if (it) {
                     findNavController().navigate(R.id.action_loginFragment_to_newsFragment)

@@ -1,10 +1,12 @@
 package com.example.newsapp.di
 
+import android.content.Context
+import androidx.room.Room
+import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.repository.AuthenticationRepository
 import com.example.newsapp.repository.AutheticationRepositoryImpl
 import com.example.newsapp.retrofit.ApiEndPoints
 import com.example.newsapp.utils.Constants
-import com.example.newsapp.viewmodels.UserAuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -32,12 +34,19 @@ class AppModule {
         return retrofit.create(ApiEndPoints::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun getNewsDataBase(context: Context): NewsDataBase {
+        return Room.databaseBuilder(context, NewsDataBase::class.java,"NewsDB").fallbackToDestructiveMigration().build()
+    }
+
     @Provides
     fun getAutheticationRepositoryImpl(
         firebaseAuth: FirebaseAuth,
-        apiEndPoints: ApiEndPoints
+        apiEndPoints: ApiEndPoints,
+        newsDataBase: NewsDataBase
     ): AuthenticationRepository {
-        return AutheticationRepositoryImpl(firebaseAuth, apiEndPoints)
+        return AutheticationRepositoryImpl(firebaseAuth, apiEndPoints,newsDataBase)
     }
 
 }

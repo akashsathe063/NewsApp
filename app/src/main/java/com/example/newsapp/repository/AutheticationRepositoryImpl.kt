@@ -1,6 +1,8 @@
 package com.example.newsapp.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.model.Article
 import com.example.newsapp.retrofit.ApiEndPoints
 import com.example.newsapp.utils.AuthListner
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 class AutheticationRepositoryImpl @Inject constructor(
     private var auth: FirebaseAuth,
-    private var apiEndPoints: ApiEndPoints
+    private var apiEndPoints: ApiEndPoints,
+    private var newsDataBase: NewsDataBase
 ) :
     AuthenticationRepository {
     /**
@@ -59,9 +62,14 @@ class AutheticationRepositoryImpl @Inject constructor(
         if (result.isSuccessful) {
             if (result.body() != null) {
                 val articals = result.body()?.articles
+                newsDataBase.getNewsDao().upsertNews(articals as ArrayList<Article>)
                 return articals as ArrayList<Article>
             }
         }
         return emptyList<Article>() as ArrayList<Article>
+    }
+
+    override suspend fun getNewsFromLOcalDataBAse(): LiveData<List<Article>> {
+        return newsDataBase.getNewsDao().getNews()
     }
 }
